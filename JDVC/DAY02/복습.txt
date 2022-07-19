@@ -1,0 +1,47 @@
+JDBC ( Java Database Connectivity )
+
+Windows(SW) <-> 인터페이스 <-> Driver <-> Printer(HW)..  
+
+Java(SW) <-> 인터페이스(JDBC) <-> Driver <->  DBMS(SW).. 
+
+
+< 단계 >
+(1) Driver(DBMS회사) 로딩 
+    Class.forName("oracle.jdbc.driver.OracleDriver"); 
+
+(2) Connection 생성 
+    String url = "jdbc:oracle:thin:@localhost:1521:JAVA";
+    con = DriverManager.getConnection(url, usr, pwd);
+
+(3) Statement 생성 
+    Statement stmt = con.createStatement();
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    CallableStatement cstmt = con.prepareCall(sql);
+
+(4) Statement 실행 
+    stmt.execute(sql); 
+    int i = stmt.executeUpdate(sql); 
+    ResultSet rs = stmt.executeQuery(sql);
+
+    ex1) pstmt.setInt(1, 10); pstmt.setString(2, "길동");..
+	pstmt.execute(); i=pstmt.executeUpdate(); rs=pstmt.executeQuery();
+
+    ex2) cstmt.setInt(1, 1000); cstmt.setFloat(2, 0.1f);
+	cstmt.execute(); 
+
+(5) 데이터 추출 
+    ResultSet rs = null;
+    while(rs.next()){
+	int no = rs.getInt("NO");
+	String name = rs.getString("NAME");
+    }
+
+
+    cf) 동적커서관련 rs 메소드들 
+       rs.next(); rs.previous();
+       rs.beforeFirst(); rs.afterLast();
+
+(6) 연결 객체들 닫기 
+    rs.close();
+    stmt.close();
+    con.close();
